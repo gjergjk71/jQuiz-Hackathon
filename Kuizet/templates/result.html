@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Heroic Features - Start Bootstrap Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/heroic-features.css' %}" rel="stylesheet">
+     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <style>
+        #example1 {
+          background: url('https://swoonproduction.s3.amazonaws.com/media/original_images/quiz_xEHRxwV.jpg');
+          background-repeat: no-repeat;
+          background-size: 800px 350px;
+        }
+
+        #example2 {
+          border: 2px solid black;
+          padding: 25px;
+          background: url(mountain.jpg);
+          background-repeat: no-repeat;
+          background-size: 300px 100px;
+        }
+      </style>
+  </head>
+
+  <body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="#">jQuiz</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="/home">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Contact</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">Logout</a>
+            </li>
+            {% endif %}
+          </ul>
+          {% if not user.is_authenticated %}
+          <form method="POST" class="form-inline ml-auto"> {% csrf_token %}
+                    <div class="input-group"> <span class="input-group-addon"><i class="fa fa-user" style="font-size:20px;"></i></span>
+                        <input
+                        id="username" type="username" class="form-control" name="username" value="" placeholder="Username" required>
+                    </div>
+                    <div style="margin:5px;" class="input-group"> <span class="input-group-addon"><i class="fa fa-unlock-alt" style="font-size:20px;"></i></span>
+                        <input
+                        id="password" type="password" class="form-control" name="password" value=""
+                        placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <a href="{% url 'signup' %}"><button style="margin:5px;" type="button" class="btn btn-primary">Sign Up</button></a>
+
+                </form>
+           {% endif %}
+                </div>
+
+        </div>
+      </div>
+    </nav>
+      {% if invalid %}
+<div style="padding:10px;margin:10px;" class="alert alert-danger">
+  <strong>Something went wrong!</strong> Your username or password is invalid.
+</div>
+{% endif %}
+{% if registered %}
+<div style="padding:10px;margin:10px;" class="alert alert-success">
+  <strong>Successful!</strong> You can now log in!.
+</div>
+{% endif %}
+<br>
+<br>
+<br>
+<p>
+	<p>
+<h1 style="text-align:center;">{{correct_answers }}/{{ answers }}</h1>
+<a href="{% url 'quiz' quiz.id %}"><button class="col-md-12 text-center btn btn-primary" type="button">Retake the test</button>
