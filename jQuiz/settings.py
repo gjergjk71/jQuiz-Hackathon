@@ -127,5 +127,5 @@ STATICFILES_DIRS = [
 ]
 STATIC_URL = '/static/'
 
-MEDIA_ROOT = "/home/gjergj/Desktop/jLearn/Quiz/static/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "static/media/")
 MEDIA_URL = "/media/"
