@@ -50,33 +50,36 @@ def quiz(request,ID):
 	return render(request,"kuiz.html",context)
 @login_required
 def result(request,ID):
-	quiz = Quiz.objects.get(pk=ID)
-	questions = Question.objects.filter(quiz=quiz)
-	answers = request.POST.getlist("answerList[]")
-	correct_answers = 0 
-	questions_answers = {}
-	for question in questions:
-		answers_list = []
-		for answer in Answer.objects.filter(question=question):
-			answers_list.append(answer.correct)
-			
-		questions_answers[question] = answers_list
-
-	for answer in answers:
-		try:
-			if Answer.objects.get(pk=int(answer)).correct == "1":
-				correct_answers +=1
-		except:
-			pass
-	"""
+	if request.method == "POST":
+		quiz = Quiz.objects.get(pk=ID)
+		questions = Question.objects.filter(quiz=quiz)
+		answers = request.POST.getlist("answerList[]")
+		correct_answers = 0 
+		questions_answers = {}
 		for question in questions:
+			answers_list = []
+			for answer in Answer.objects.filter(question=question):
+				answers_list.append(answer.correct)
+				
+			questions_answers[question] = answers_list
+
 		for answer in answers:
 			try:
 				if Answer.objects.get(pk=int(answer)).correct == "1":
 					correct_answers +=1
 			except:
 				pass
-				"""
-	context = {"quiz":quiz,"answers":len(answers),"correct_answers":correct_answers,
-					"questions_answers":questions_answers}
-	return render(request,"result.html",context)
+		"""
+			for question in questions:
+			for answer in answers:
+				try:
+					if Answer.objects.get(pk=int(answer)).correct == "1":
+						correct_answers +=1
+				except:
+					pass
+					"""
+		context = {"quiz":quiz,"answers":len(answers),"correct_answers":correct_answers,
+						"questions_answers":questions_answers}
+		return render(request,"result.html",context)
+	else:
+		return redirect("/quiz/{}".format(ID))
